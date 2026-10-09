@@ -1,6 +1,6 @@
 # 代码说明
 
-**先看这三个入口，报告里的实验就是从这里跑的：**
+**旧报告的三个实验入口：**
 
 - **`Benchmark.java`**：跑标题检索，记录耗时，再检查查出来的结果。
 - **`UpdateBenchmark.java`**：跑姓名更新，把名字和姓氏里的大写 `T` 换成 `Ttt`，同样会计时和检查结果。
@@ -25,3 +25,11 @@
 - `DataManipulation.java`、`PeopleUpdater.java`：分别是数据操作和姓名更新的共用接口。
 - `DataFactory.java`：按参数选用文件或数据库的实现。
 - `ConnectionSupport.java`：让测速入口控制连接，用来测连接开销和复用连接。
+
+**新IMDb全量检索看 `ImdbBenchmark.java`：**
+
+文件读取完整`title.basics.tsv`，两个数据库直接查`imdb.public.title_basics`，返回全部匹配记录的九字段。文件逐行读、数据库分批读，不把全部结果留在内存里。
+
+IDEA选择`ImdbBenchmark 文件`、`ImdbBenchmark PostgreSQL`、`ImdbBenchmark openGauss`依次运行即可，三个配置都已填好关键词`man`。工作目录是`java`，VM选项为`-Xmx512m`。如果直接运行主类，参数分别为`file man`、`postgresql man`、`opengauss man`。
+
+每种方式预热1次、测量3次，单次45秒、整次约180秒限时。少量导入遗漏或结果差异只显示信息，不会拦住测速；超时不会自动重试，未完成的轮次不计入统计。`createImdbConnection()`复用原地址和账号，选择`imdb`并设置连接超时。

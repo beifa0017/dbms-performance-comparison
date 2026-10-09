@@ -2,6 +2,8 @@
 
 **张卓霖**
 
+代码与报告：[GitHub仓库](https://github.com/beifa0017/CS213-principles-of-database-system-project1-beifa0017)
+
 ## 1. 实验设计与实现
 
 在 Windows 上用 Java 21.0.8 比较 CSV 文件、PostgreSQL 18.6（原生服务）和 openGauss 6.0.6（Docker）。主要比较两项操作：1.检索标题中含小写 man 的电影，返回全部五字段；2.把 first_name、surname 中的全部大写 T 替换为 Ttt。
@@ -10,7 +12,7 @@
 
 文件版直接读写CSV；数据库版通过JDBC连接PostgreSQL或openGauss，再执行查询和更新。
 
-每组预热 3 次、正式测量 20 次，用 System.nanoTime 计时，取中间两项平均值作为中位数。原规模、十倍和五十倍分别匹配 167、1,670、8,350 条电影，改变 1,287、12,870、64,350 条人物。三种方式的结果一致，其余字段和空值保持不变。
+上述三组预热 3 次、正式测量 20 次，用 System.nanoTime 计时，取中间两项平均值作为中位数。原规模、十倍和五十倍分别匹配 167、1,670、8,350 条电影，改变 1,287、12,870、64,350 条人物。三种方式的结果一致，其余字段和空值保持不变。
 
 ## 2. 标题检索计时
 
@@ -51,15 +53,25 @@
 
 文件只扫描100条记录时，比两个数据库都快；查找中间、靠后或不存在的编号时，需要扫描更多记录，比数据库慢得多。对编号230100，两个数据库的执行计划都显示Index Scan，使用主键索引定位记录。这展示了索引在大量数据中查找少量目标记录的作用。
 
-## 5. 结论与比较标准
+## 5. IMDb全量标题检索
+
+使用[IMDb公开数据](https://datasets.imdbws.com/)的title.basics.tsv，文件约1.116 GB，共12,849,947条影视作品记录。检索primaryTitle中含小写man的作品，读完全部匹配记录的九字段。数据库复用连接，计时包含检索、读取和结果汇总。每种方式预热1次、测量3次，表中为中位数，单位秒。
+
+| 文件 | PostgreSQL | openGauss |
+|---:|---:|---:|
+| 4.531 | 3.555 | 3.253 |
+
+两库导入时各少260条，文件匹配125,583条，两库各匹配125,581条，本组保留这部分差异。两库的检索都比文件快，openGauss的中位数略低于PostgreSQL，但这三次运行的耗时波动更大。
+
+## 6. 结论与比较标准
 
 本实验中，数据库用SQL筛选和批量替换，并在主键查找中使用索引；文件程序需自行解析、扫描和改写数据。DBMS还能检查数据是否符合约束、在操作失败时回滚修改，并管理同时进行的读写。这些也是选择数据库的理由，不能只看一次操作的耗时。
 
-比较PostgreSQL与openGauss，应使用相同的数据、执行相同的操作，并核对结果，再比较检索、更新和建立连接的耗时，以及多次运行的波动。本机这三种规模中，PostgreSQL的复用连接检索和更新更快，openGauss的含连接完整检索更快。PostgreSQL直接在Windows上运行，openGauss在Docker里运行，运行环境也可能影响耗时，所以这个结果只代表本机表现。
+比较PostgreSQL与openGauss，应使用相同的数据、执行相同的操作，并核对结果，再比较检索、更新和建立连接的耗时，以及多次运行的波动。lab1三种规模中，PostgreSQL的复用连接检索和更新更快，openGauss的含连接完整检索更快；IMDb全量检索中，openGauss的中位数更低。比较结果会随数据和操作变化。PostgreSQL直接在Windows上运行，openGauss在Docker里运行，运行环境也可能影响耗时，所以这个结果只代表本机表现。
 
 扩充后，记录更多，每条记录里的标题和姓名也更长。五十倍实验还用了不同的Java内存设置，所以耗时变化不能只用记录数增加来解释。
 
-## 附录：五十倍运行结果
+## 附录：运行结果
 
 以下截图保留五十倍数据下三项实验、三种方式的运行结果。
 
@@ -86,3 +98,11 @@
 ![openGauss五十倍姓名更新](images/24-opengauss-name-update-50x.png)
 
 ![openGauss五十倍主键查找](images/31-opengauss-primary-key-50x.png)
+
+### IMDb全量标题检索
+
+![文件IMDb全量标题检索](images/32-file-imdb-title-full.png)
+
+![PostgreSQLIMDb全量标题检索](images/33-postgresql-imdb-title-full.png)
+
+![openGaussIMDb全量标题检索](images/34-opengauss-imdb-title-full.png)

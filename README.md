@@ -26,3 +26,5 @@
 | PrimaryKeyBenchmark | file | 五十倍主键查找 |
 
 把file换成postgresql或opengauss即可切换实现；五十倍运行的VM选项为-Xmx1024m。驱动和CSV需在本地准备。
+
+新增IMDb全量标题检索用`ImdbBenchmark`，参数为`file man`、`postgresql man`或`opengauss man`。文件读完整TSV，两库查`imdb.public.title_basics`。数据来自[IMDb官方](https://datasets.imdbws.com/)，TSV放在与java同级的“导出的文件”目录，两库需已完成导入。VM选项`-Xmx512m`；预热1次、测量3次。导入造成的少量差异只记录，不中止测速。报告已加入这组全量结果。

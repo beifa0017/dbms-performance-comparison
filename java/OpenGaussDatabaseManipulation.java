@@ -39,6 +39,21 @@ public class OpenGaussDatabaseManipulation implements DataManipulation, Connecti
         return DriverManager.getConnection(urlPrefix + host + ":" + port + "/" + dbname, user, pwd);
     }
 
+    // IMDb大数据入口用独立只读连接；复用现有地址和账号，允许指定数据库。
+    public Connection createImdbConnection(String database) throws SQLException {
+        try {
+            Class.forName(driver);
+        } catch (ClassNotFoundException e) {
+            throw new SQLException("找不到 openGauss JDBC 驱动。", e);
+        }
+        String target = database == null ? dbname : database;
+        if (!target.matches("[A-Za-z0-9_-]+")) {
+            throw new SQLException("数据库名应只含字母、数字、下划线或连字符。");
+        }
+        return DriverManager.getConnection(urlPrefix + host + ":" + port + "/" + target
+                + "?connectTimeout=10&socketTimeout=50", user, pwd);
+    }
+
     private void getConnection() {
         if (pwd.isEmpty()) {
             System.err.println("请先填写 pwd 中的数据库密码。");
