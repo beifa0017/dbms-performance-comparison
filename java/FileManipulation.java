@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileManipulation implements DataManipulation {
-    // 从 project1/java 出发，读取你导出的 CSV。
+    // 工作目录为 java，读取与 java 同级的“导出的文件”中的 CSV。
     private final String moviesFile;
     private int scannedMovieCount;
 
-    // 仅选择固定规模的基线；无参数构造仍读取原规模。
+    // 按选定规模找到对应的电影 CSV。
     public FileManipulation(DatasetScale scale) {
         moviesFile = scale.moviesCsv();
     }

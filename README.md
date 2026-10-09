@@ -1,30 +1,24 @@
 # 文件与数据库操作比较
 
-用课程lab1的电影和人物数据，比较CSV文件、PostgreSQL和openGauss的标题检索、姓名更新和主键查找。
+比较文件、PostgreSQL和openGauss的标题检索、姓名更新和主键查找，另用IMDb大表测试标题检索。
 
-完整结果看[报告](report.md)，各文件负责什么看[代码说明](java/README.md)。
+结果看[报告](report.md)，各文件负责什么看[代码说明](java/README.md)。
 
-## 实验里看到了什么
+## 怎么跑
 
-- 标题检索：提前建立并复用连接后，两个数据库都比文件完整检索快。
-- 姓名更新：扩充后文件耗时较低，但文件写回和数据库同步提交提供的保存保证不同。
-- 主键查找：文件找靠前记录很快，找中间、靠后或不存在的编号时，两库的索引查找更快。
+用IDEA打开`java`，使用JDK 21，添加PostgreSQL JDBC 42.7.13和openGauss JDBC 6.0.6驱动。在两个`*DatabaseManipulation.java`中填写自己的地址、端口、数据库名、用户名和密码。
 
-这些是本机配置下的测量结果，具体数据和计时范围见报告。
+数据文件放在与`java`同级的“导出的文件”目录，运行工作目录设为`java`。
 
-## 怎么运行
-
-1. 用IDEA打开源码，使用JDK 21，添加PostgreSQL JDBC 42.7.13和openGauss JDBC 6.0.6两个驱动。
-2. 在DatabaseManipulation、OpenGaussDatabaseManipulation中填写自己的连接配置。
-3. 将lab1导出的movies.csv、people.csv放在与java同级的“导出的文件”目录。两个数据库的原规模表按lab1准备；运行DatasetBuilder，参数填50x，准备扩充CSV及两库基线。
-4. 工作目录设为java，选择下面的主类运行：
-
-| 主类 | 程序参数示例 | 做什么 |
+| 主类 | 程序参数示例 | 实验 |
 |---|---|---|
-| Benchmark | file man 50x | 标题检索 |
-| UpdateBenchmark | file 50x | 姓名更新 |
+| Benchmark | file man 50x | lab1标题检索 |
+| UpdateBenchmark | file 50x | lab1姓名更新 |
 | PrimaryKeyBenchmark | file | 五十倍主键查找 |
+| ImdbBenchmark | file man | IMDb全量标题检索 |
 
-把file换成postgresql或opengauss即可切换实现；五十倍运行的VM选项为-Xmx1024m。驱动和CSV需在本地准备。
+把`file`换成`postgresql`或`opengauss`即可切换实现。
 
-新增IMDb全量标题检索用`ImdbBenchmark`，参数为`file man`、`postgresql man`或`opengauss man`。文件读完整TSV，两库查`imdb.public.title_basics`。数据来自[IMDb官方](https://datasets.imdbws.com/)，TSV放在与java同级的“导出的文件”目录，两库需已完成导入。VM选项`-Xmx512m`；预热1次、测量3次。导入造成的少量差异只记录，不中止测速。报告已加入这组全量结果。
+lab1先准备课程原表和`movies.csv`、`people.csv`，再运行`DatasetBuilder`，参数分别填`10x`和`50x`，生成两组扩充数据。五十倍的VM选项为`-Xmx1024m`；openGauss姓名实验需启用`accept_empty_str`以保留空字符串。
+
+IMDb使用[官方数据](https://datasets.imdbws.com/)的`title.basics.tsv`，两库导入到`imdb.public.title_basics`；VM选项为`-Xmx512m`。这一组预热1次、测量3次，少量导入差异只记录。

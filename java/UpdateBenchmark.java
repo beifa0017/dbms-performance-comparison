@@ -5,7 +5,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 // 姓名更新独立入口：UpdateBenchmark [file|postgresql|opengauss] [1x|10x|50x|100x]，默认 file、1x。
-// 运行工作目录为 project1/java；不影响标题检索 Benchmark。
+// 工作目录为 java；不影响标题检索 Benchmark。
 public class UpdateBenchmark {
     private static final int WARMUP_RUNS = 3;
     private static final int MEASURED_RUNS = 20;

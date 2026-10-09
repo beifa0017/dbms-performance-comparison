@@ -5,7 +5,7 @@ import java.sql.Statement;
 import java.util.Arrays;
 
 // PostgreSQL、openGauss 共用更新 SQL；两者连接配置仍各自保留。
-// 写入目标仅为选定规模的 people_bench 副本；people 与 people_10x 基线均只读。
+// 只修改选定规模的工作副本，各规模人物基线只读。
 public class PeopleDatabaseUpdater implements PeopleUpdater {
     private final Connection connection;
     private final int rowCount;

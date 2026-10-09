@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 
 // 只准备扩充基线，不测速、不更新姓名、不写入原始表或更新工作表。
 // 用法：DatasetBuilder [10x|50x|100x] [refresh]；无参数默认10x。
-// 工作目录为 project1/java；重复运行时校验并复用已有正确数据。
+// 工作目录为 java；重复运行时校验并复用已有正确数据。
 public class DatasetBuilder {
     private static final int BATCH_SIZE = 1000;
     private static final long RANDOM_SEED = 20261005L;

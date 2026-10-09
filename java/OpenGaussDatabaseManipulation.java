@@ -15,7 +15,7 @@ public class OpenGaussDatabaseManipulation implements DataManipulation, Connecti
         this(DatasetScale.ORIGINAL);
     }
 
-    // 所选规模用于实验查询，其他课程示例仍沿用原表。
+    // 按规模选择电影查询表。
     public OpenGaussDatabaseManipulation(DatasetScale scale) {
         moviesTable = scale.moviesTable();
     }
@@ -29,7 +29,7 @@ public class OpenGaussDatabaseManipulation implements DataManipulation, Connecti
     private String urlPrefix = "jdbc:opengauss://";
 
 
-    // 姓名更新测速使用独立连接，沿用本类配置，由调用者负责关闭。
+    // 建立独立连接，沿用本类配置，由调用者关闭。
     public Connection createPeopleUpdateConnection() throws SQLException {
         try {
             Class.forName(driver);
@@ -39,7 +39,7 @@ public class OpenGaussDatabaseManipulation implements DataManipulation, Connecti
         return DriverManager.getConnection(urlPrefix + host + ":" + port + "/" + dbname, user, pwd);
     }
 
-    // IMDb大数据入口用独立只读连接；复用现有地址和账号，允许指定数据库。
+    // IMDb入口的独立连接，复用地址和账号并指定数据库。
     public Connection createImdbConnection(String database) throws SQLException {
         try {
             Class.forName(driver);
