@@ -2,7 +2,7 @@
 
 **张卓霖**
 
-代码与报告：[GitHub仓库](https://github.com/beifa0017/CS213-principles-of-database-system-project1-beifa0017)
+代码与报告：[GitHub仓库](https://github.com/beifa0017/dbms-performance-comparison)
 
 ## 1. 实验设计与实现
 
