@@ -16,7 +16,7 @@
 
 **剩下的是准备和辅助代码：**
 
-- `DatasetBuilder.java`：准备lab1扩充CSV，并导入两库。
+- `DatasetBuilder.java`：生成lab1扩充CSV，或用 `import` 把包内CSV导入选定数据库。
 - `DatasetScale.java`：选择对应规模的文件路径和表名。
 - `DataFactory.java`：按参数选择查询实现。
 - `DataManipulation.java`、`PeopleUpdater.java`：查询和姓名更新的共用接口。

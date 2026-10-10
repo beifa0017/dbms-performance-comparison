@@ -21,7 +21,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-// 只准备扩充基线，不测速、不更新姓名、不写入原始表或更新工作表。
+// 准备实验基线；import 直接使用下载包内的 CSV，不重新生成数据。
 // 用法：DatasetBuilder [10x|50x|100x] [refresh]；无参数默认10x。
 // 工作目录为 java；重复运行时校验并复用已有正确数据。
 public class DatasetBuilder {
@@ -30,6 +30,10 @@ public class DatasetBuilder {
     private static final Logger GAUSS_LOGGER = Logger.getLogger("org.opengauss");
 
     public static void main(String[] args) throws Exception {
+        if (args.length > 0 && args[0].equals("import")) {
+            importCsv(args);
+            return;
+        }
         boolean legacyRefresh = args.length == 1 && args[0].equals("refresh");
         DatasetScale scale = args.length == 0 || legacyRefresh
                 ? DatasetScale.TENFOLD : DatasetScale.parse(args[0]);
@@ -73,6 +77,31 @@ public class DatasetBuilder {
             throw new IOException("原始 CSV 内容发生变化。");
         }
         System.out.println("三端逐字段校验通过；原始 CSV 未变。测速须选择对应的 " + scale.tag() + " 配置。");
+    }
+
+    // 单独准备一个数据库、一个规模；已有非空表只核对，不覆盖。
+    private static void importCsv(String[] args) throws Exception {
+        if (args.length != 3 || !List.of("postgresql", "opengauss").contains(args[1])) {
+            throw new IllegalArgumentException("用法：DatasetBuilder import postgresql|opengauss 1x|10x|50x。");
+        }
+        DatasetScale scale = DatasetScale.parse(args[2]);
+        if (scale == DatasetScale.HUNDREDFOLD) {
+            throw new IllegalArgumentException("下载包只提供 1x、10x、50x CSV。");
+        }
+        GAUSS_LOGGER.setLevel(Level.WARNING);
+        List<String[]> movies = readCsv(Path.of(scale.moviesCsv()), 5);
+        List<String[]> people = readCsv(Path.of(scale.peopleCsv()), 6);
+        if (movies.size() != 9204 * scale.factor() || people.size() != 16489 * scale.factor()) {
+            throw new IOException("CSV 记录数与规模不符，未开始导入。");
+        }
+        movies.sort(Comparator.comparingInt(row -> Integer.parseInt(row[0])));
+        people.sort(Comparator.comparingInt(row -> Integer.parseInt(row[0])));
+        boolean gauss = args[1].equals("opengauss");
+        Connection connection = gauss
+                ? new OpenGaussDatabaseManipulation().createPeopleUpdateConnection()
+                : new DatabaseManipulation().createPeopleUpdateConnection();
+        prepareDatabase(args[1], connection, gauss, movies, people, scale, false);
+        System.out.println("导入完成，可以运行 " + args[1] + " " + scale.tag() + " 实验。");
     }
 
     // 固定按原始 ID 排序，编号为 1..N；非空标题、姓名加随机后缀，其余字段保持原值。
