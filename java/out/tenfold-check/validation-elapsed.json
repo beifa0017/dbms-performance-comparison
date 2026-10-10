@@ -1,0 +1,44 @@
+[
+  {
+    "main": "Benchmark",
+    "system": "file",
+    "scale": "10x",
+    "seconds": 1.139,
+    "exit_code": 0
+  },
+  {
+    "main": "Benchmark",
+    "system": "postgresql",
+    "scale": "10x",
+    "seconds": 4.484,
+    "exit_code": 0
+  },
+  {
+    "main": "Benchmark",
+    "system": "opengauss",
+    "scale": "10x",
+    "seconds": 2.506,
+    "exit_code": 0
+  },
+  {
+    "main": "UpdateBenchmark",
+    "system": "file",
+    "scale": "10x",
+    "seconds": 7.9,
+    "exit_code": 0
+  },
+  {
+    "main": "UpdateBenchmark",
+    "system": "postgresql",
+    "scale": "10x",
+    "seconds": 28.767,
+    "exit_code": 0
+  },
+  {
+    "main": "UpdateBenchmark",
+    "system": "opengauss",
+    "scale": "10x",
+    "seconds": 17.019,
+    "exit_code": 0
+  }
+]

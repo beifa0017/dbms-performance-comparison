@@ -1,0 +1,5 @@
+[
+  {"system":"file","scale":"50x","setup_seconds":0.896,"round_seconds":[2.368,2.217],"estimated_23_round_seconds":55.371},
+  {"system":"postgresql","scale":"50x","setup_seconds":0.484,"round_seconds":[4.977,7.256],"estimated_23_round_seconds":167.371},
+  {"system":"opengauss","scale":"50x","setup_seconds":1.058,"round_seconds":[4.552,3.943],"estimated_23_round_seconds":105.764}
+]

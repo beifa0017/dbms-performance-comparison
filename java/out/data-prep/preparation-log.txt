@@ -1,0 +1,23 @@
+十倍 CSV 已准备：电影 92040 条，人物 164890 条。
+非空标题和姓名已加随机后缀及编号；固定种子：20261005
+标题包含 man：1670
+姓名含大写 T：12870
+PostgreSQL：准备电影十倍基线。
+  public.movies_10x 已写入 50000 条。
+PostgreSQL：准备人物十倍基线。
+  public.people_10x 已写入 50000 条。
+  public.people_10x 已写入 100000 条。
+  public.people_10x 已写入 150000 条。
+PostgreSQL：两张十倍基线表已提交。
+PostgreSQL：十倍基线统计信息已更新。
+openGauss：准备电影十倍基线。
+  public.movies_10x 已写入 50000 条。
+openGauss：准备人物十倍基线。
+  public.people_10x 已写入 50000 条。
+  public.people_10x 已写入 100000 条。
+  public.people_10x 已写入 150000 条。
+openGauss：两张十倍基线表已提交。
+openGauss：十倍基线统计信息已更新。
+PostgreSQL：新连接逐字段校验通过，电影 92040 条、人物 164890 条。
+openGauss：新连接逐字段校验通过，电影 92040 条、人物 164890 条。
+三端逐字段校验通过；原始 CSV 未变。现有测速入口仍使用原规模。

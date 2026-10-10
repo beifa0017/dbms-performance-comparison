@@ -1,0 +1,62 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Client",
+      "request": "launch",
+      "mainClass": "Client",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "vmArgs": "-Dfile.encoding=UTF-8 -Dstdout.encoding=UTF-8 -Dstderr.encoding=UTF-8"
+    },
+    {
+      "type": "java",
+      "name": "OpenGaussClient",
+      "request": "launch",
+      "mainClass": "OpenGaussClient",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "vmArgs": "-Dfile.encoding=UTF-8 -Dstdout.encoding=UTF-8 -Dstderr.encoding=UTF-8"
+    },
+    {
+      "type": "java",
+      "name": "FileClient",
+      "request": "launch",
+      "mainClass": "FileClient",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "vmArgs": "-Dfile.encoding=UTF-8 -Dstdout.encoding=UTF-8 -Dstderr.encoding=UTF-8"
+    },
+    {
+      "type": "java",
+      "name": "Benchmark 文件",
+      "request": "launch",
+      "mainClass": "Benchmark",
+      "args": "file man",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "vmArgs": "-Dfile.encoding=UTF-8 -Dstdout.encoding=UTF-8 -Dstderr.encoding=UTF-8"
+    },
+    {
+      "type": "java",
+      "name": "Benchmark PostgreSQL",
+      "request": "launch",
+      "mainClass": "Benchmark",
+      "args": "database man",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "vmArgs": "-Dfile.encoding=UTF-8 -Dstdout.encoding=UTF-8 -Dstderr.encoding=UTF-8"
+    },
+    {
+      "type": "java",
+      "name": "Benchmark openGauss",
+      "request": "launch",
+      "mainClass": "Benchmark",
+      "args": "opengauss man",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "vmArgs": "-Dfile.encoding=UTF-8 -Dstdout.encoding=UTF-8 -Dstderr.encoding=UTF-8"
+    }
+  ]
+}

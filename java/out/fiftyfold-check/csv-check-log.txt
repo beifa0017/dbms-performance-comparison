@@ -1,0 +1,3 @@
+movies PASS records 460200 matches 8350 unique_nonempty {'1': 460200} bytes 22010489
+people PASS records 824450 matches 64350 unique_nonempty {'1': 805100, '2': 824350} bytes 45085351
+PASS: original and tenfold CSVs plus old work copy unchanged; 50x prefixes match 10x; metadata saved.
